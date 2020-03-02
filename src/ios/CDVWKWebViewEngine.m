@@ -429,6 +429,16 @@ NSTimer *timer;
     NSLog(@"Using Ionic WKWebView");
 
     [self addURLObserver];
+    [self subViewsBackgroundTrans:self.engineWebView];
+}
+
+- (void) subViewsBackgroundTrans:(UIView*)view{
+
+    for (UIView *subView in view.subviews) {
+        subView.opaque = NO;
+        subView.backgroundColor = UIColor.clearColor;
+        [self subViewsBackgroundTrans:subView];
+    }
 }
 
 // https://github.com/Telerik-Verified-Plugins/WKWebView/commit/04e8296adeb61f289f9c698045c19b62d080c7e3#L609-L620
@@ -865,6 +875,7 @@ static void * KVOContext = &KVOContext;
     CDVViewController* vc = (CDVViewController*)self.viewController;
     [CDVUserAgentUtil releaseLock:vc.userAgentLockToken];
 
+    [self subViewsBackgroundTrans:self.engineWebView];
     [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:CDVPageDidLoadNotification object:webView]];
 }
 
