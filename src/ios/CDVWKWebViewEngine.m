@@ -363,6 +363,11 @@ NSTimer *timer;
 
     wkWebView.UIDelegate = self.uiDelegate;
     self.engineWebView = wkWebView;
+    wkWebView.opaque = NO;
+    wkWebView.backgroundColor = UIColor.clearColor;
+    self.engineWebView.opaque = NO;
+    self.engineWebView.backgroundColor = UIColor.clearColor;
+
     // add to keyWindow to ensure it is 'active'
     [UIApplication.sharedApplication.keyWindow addSubview:self.engineWebView];
 
