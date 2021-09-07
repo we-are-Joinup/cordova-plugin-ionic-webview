@@ -194,11 +194,14 @@
                          forKey:_BGStatus];
     }
     NSString *userAgent = configuration.applicationNameForUserAgent;
-    if (
-        [settings cordovaSettingForKey:@"OverrideUserAgent"] == nil &&
-        [settings cordovaSettingForKey:@"AppendUserAgent"] != nil
-        ) {
+    if ( [settings cordovaSettingForKey:@"OverrideUserAgent"] == nil ) {
+      if ( [settings cordovaSettingForKey:@"AppendUserAgent"] == nil ) {
+        NSString *device = UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone ? @"iPhone" : @"iPad";
+        userAgent = [NSString stringWithFormat:@"%@ (%@; CPU OS %@ like Mac OS X)", userAgent, device, [UIDevice.currentDevice.systemVersion stringByReplacingOccurrencesOfString:@"." withString:@"_"]];
+      }
+      if ([settings cordovaSettingForKey:@"AppendUserAgent"] != nil ) {
         userAgent = [NSString stringWithFormat:@"%@ %@", userAgent, [settings cordovaSettingForKey:@"AppendUserAgent"]];
+      }
     }
     configuration.applicationNameForUserAgent = userAgent;
     configuration.allowsInlineMediaPlayback = [settings cordovaBoolSettingForKey:@"AllowInlineMediaPlayback" defaultValue:YES];
